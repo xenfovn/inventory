@@ -425,3 +425,22 @@ function DropsSync()
 end
 
 DropsSync()
+
+
+
+ESX.RegisterServerCallback('inventory:checkxe', function (source, cb, plate)
+	local xPlayer = ESX.GetPlayerFromId(source)
+
+    print(plate)
+
+	MySQL.Async.fetchAll('SELECT * FROM owned_vehicles WHERE owner = @owner AND plate = @plate', {
+		['@owner'] = xPlayer.identifier,
+		['@plate'] = plate
+	}, function (result)
+		if result[1] ~= nil then
+			cb(false)
+		else
+			cb(true)
+		end
+	end)
+end)
