@@ -35,10 +35,11 @@ if Config.Trunk then
                         end
                     end
 
-                    SetCarBootOpen(vehicle)
-
-                    if Config.TrunkSave then
-                        ESX.TriggerServerCallback("inventory:isVehicleOwned", function(owned)
+                    
+                    ESX.TriggerServerCallback("inventory:checkxe", function(owned)
+                        print("haha", owned, plate)
+                        if owned then
+                            SetCarBootOpen(vehicle)
                             OpenInventory({
                                 id = plate, 
                                 type = 'trunk', 
@@ -47,20 +48,14 @@ if Config.Trunk then
                                 save = owned,
                                 timeout = Config.TrunkTimeout
                             }) 
-                        end, plate)
-                    else 
-                        OpenInventory({
-                            id = plate, 
-                            type = 'trunk', 
-                            title = 'Cốp xe - <b>' .. plate .. '</b>',
-                            weight = Config.TrunkWeights[type], 
-                            save = false,
-                            timeout = Config.TrunkTimeout
-                        }) 
-                    end
+                        else
+                            TriggerEvent('inventory:notify', 'error', 'Không phải xe của bạn!')
+                        end
+                    end, plate)
                 else 
                     TriggerEvent('inventory:notify', 'error', 'Vehicle is Locked!')
                 end
+                
             end
         end
     end, true)
