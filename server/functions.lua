@@ -438,9 +438,9 @@ ESX.RegisterServerCallback('inventory:checkxe', function (source, cb, plate)
 		['@plate'] = plate
 	}, function (result)
 		if result[1] ~= nil then
-			cb(false)
-		else
 			cb(true)
+		else
+			cb(false)
 		end
 	end)
 end)
